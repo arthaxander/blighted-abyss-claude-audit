@@ -1,0 +1,9 @@
+.combat-loot-screen { min-height:100vh; min-height:100dvh; box-sizing:border-box; display:grid; place-items:start center; padding:max(18px,var(--app-foreground-safe-top)) max(14px,var(--app-content-safe-right)) max(18px,var(--app-content-safe-bottom)) max(14px,var(--app-content-safe-left)); background:radial-gradient(circle at 50% 0,#2a2224,#100f12 62%); color:#eee7db; font-family:serif }
+.combat-loot-screen-content { width:min(560px,100%); max-height:calc(100dvh - max(36px,var(--app-foreground-safe-top)) - max(36px,var(--app-content-safe-bottom))); box-sizing:border-box }
+.combat-loot-screen .pending-loot-panel { display:flex; width:100%; max-height:inherit; box-sizing:border-box; overflow:hidden; flex-direction:column; padding:18px; border-color:#806c49; background:#171419f5 }
+.combat-loot-screen .pending-loot-header,.combat-loot-screen .pending-loot-actions { flex:0 0 auto }
+.combat-loot-screen .pending-loot-content { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain }
+.combat-loot-screen .pending-loot-actions { position:sticky; bottom:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); padding-top:12px; background:linear-gradient(#17141900,#171419 22%) }
+.combat-loot-screen .pending-loot-actions button { min-width:0; min-height:48px; height:auto; white-space:normal; line-height:1.2 }
+.combat-loot-screen .pending-loot-confirm { position:fixed; z-index:2500; left:50%; top:50%; width:min(340px,calc(100vw - 32px)); box-sizing:border-box; transform:translate(-50%,-50%); padding:16px; background:#21171dfc; box-shadow:0 12px 40px #000 }
+@media(max-width:350px){.combat-loot-screen .pending-loot-actions{grid-template-columns:1fr}}

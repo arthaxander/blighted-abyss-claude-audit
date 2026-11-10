@@ -1,0 +1,13 @@
+.game-term-inline { display:inline; width:auto; min-width:0; height:auto; min-height:0; margin:0; padding:0; border:0; border-bottom-style:none; border-radius:0; background:transparent; color:#d8c281; font-family:inherit; font-size:inherit; font-style:inherit; font-weight:600; line-height:inherit; letter-spacing:inherit; text-align:inherit; vertical-align:baseline; text-decoration:none; box-shadow:none; appearance:none; -webkit-appearance:none; cursor:pointer; touch-action:manipulation; }
+.game-term-inline:hover { color:#ead9a5; }
+.game-term-inline:focus-visible { outline:1px solid #d9c27f; outline-offset:2px; border-radius:2px; }
+.inventory-grid-panel button.game-term-inline,.item-details-panel button.game-term-inline,.item-details-card button.game-term-inline { display:inline!important; width:auto!important; min-width:0!important; height:auto!important; min-height:0!important; margin:0!important; padding:0!important; border:0!important; border-radius:0!important; background:transparent!important; color:#d8c281!important; font-family:inherit!important; font-size:inherit!important; font-weight:600!important; line-height:inherit!important; box-shadow:none!important; vertical-align:baseline!important; }
+.game-term-help-layer { position:fixed; inset:0; z-index:var(--overlay-layer-game-term-help,5000); display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:max(12px, var(--app-foreground-safe-top, env(safe-area-inset-top, 0px))) max(12px, var(--app-content-safe-right, 0px)) max(12px, var(--app-content-safe-bottom, env(safe-area-inset-bottom, 0px))) max(12px, var(--app-content-safe-left, 0px)); overscroll-behavior:contain; background:rgba(5,6,8,.58); }
+.game-term-help-card { box-sizing:border-box; width:calc(100vw - 24px); max-width:340px; max-height:100%; overflow-y:auto; overscroll-behavior:contain; padding:13px 15px; border:1px solid rgba(139,119,78,.65); border-radius:9px; color:#eee9dd; background:linear-gradient(145deg,#1d1b19 0%,#141619 100%); box-shadow:0 14px 38px #000c, inset 0 1px rgba(255,238,194,.04); }
+.game-term-help-card header { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.game-term-help-card h3 { display:flex; align-items:center; gap:7px; margin:0; font-size:1rem; }
+.game-term-help-card p { margin:8px 0 0; line-height:1.45; }
+.game-term-help-close { flex:0 0 auto; width:36px; min-width:36px; height:36px; padding:0; border:0; border-radius:5px; color:#ddd2b7; background:rgba(255,255,255,.045); font-size:24px; line-height:1; cursor:pointer; }
+
+.game-term-help-icon { width:30px; height:30px; flex:0 0 30px; object-fit:contain; border-radius:5px; }
+

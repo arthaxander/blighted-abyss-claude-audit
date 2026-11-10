@@ -1,0 +1,46 @@
+.trap-disarm{position:fixed;inset:0;z-index:2200;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;display:flex;background:#080e0c url('../assets/trap/background.webp') center/cover no-repeat;color:#e5dcc8;padding:max(24px,var(--app-foreground-safe-top,0px)) max(12px,var(--app-content-safe-right,0px)) max(18px,var(--app-content-safe-bottom,0px)) max(12px,var(--app-content-safe-left,0px));isolation:isolate}
+.trap-disarm::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(#03090770,#03090735 55%,#030907a0)}
+.trap-disarm__window{width:100%;max-width:520px;margin:auto;text-align:center;display:grid;justify-items:center;gap:14px;box-sizing:border-box}
+.trap-disarm__header{min-height:68px;display:flex;flex-direction:column;justify-content:center}
+.trap-disarm__eyebrow{font:11px/1.5 system-ui,sans-serif;letter-spacing:.34em;color:#b1a082}
+.trap-disarm h2{font:clamp(23px,6vw,34px)/1.2 Georgia,serif;margin:10px 0 0;color:#eadaba;text-shadow:0 2px 5px #000}
+.trap-disarm__dial{display:block;width:min(92vw,46svh,440px);max-width:100%;height:auto;overflow:visible;pointer-events:none;filter:drop-shadow(0 6px 10px #0008)}
+.trap-disarm__sector-tint{fill:#171a13;opacity:.12;transition:fill .16s,opacity .16s}
+.trap-disarm__sector.is-marked .trap-disarm__sector-tint{fill:#0c1511;opacity:.52}
+.trap-disarm__sector.is-failed .trap-disarm__sector-tint{fill:#8b2e23;opacity:.85}
+.trap-disarm__seam{fill:none;stroke:#101510;stroke-width:1.1;stroke-linejoin:round}
+.trap-disarm__sector text{fill:#f1dfb7;font:17px Georgia,serif;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:#171b16;stroke-width:.8px}
+.trap-disarm__sector.is-marked text{fill:#a49b7e;opacity:.7}
+.trap-disarm__rim-fallback{fill:none;stroke:#b6a273;stroke-width:3}
+.trap-disarm__bolt{transform:translateY(0);transition:transform .18s ease-out}
+.trap-disarm__bolt.is-open{transform:translateY(-11px)}
+.trap-disarm__needle-outline{fill:#10150e;stroke:#10150e;stroke-width:3.3;stroke-linejoin:round}
+.trap-disarm__needle-fallback{fill:#fff0c4;stroke:#fff0c4;stroke-width:1.8;stroke-linejoin:round}
+.trap-disarm__count{fill:#fff0ce;font:15px Georgia,serif;text-anchor:middle;dominant-baseline:middle;paint-order:stroke;stroke:#141915;stroke-width:1px}
+.trap-disarm__controls{width:min(100%,390px);min-height:228px;box-sizing:border-box}
+.trap-disarm__progress{font:18px/1.4 Georgia,serif;color:#dfcfaa;margin:0 0 10px}
+.trap-disarm--ready .trap-disarm__progress,.trap-disarm--playing .trap-disarm__progress{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.trap-disarm__hint{font:14px/1.5 system-ui,sans-serif;margin:0 0 14px;text-shadow:0 1px 3px #000}
+.trap-disarm--playing .trap-disarm__hint{font-size:16px;padding-top:20px}
+.trap-disarm__subhint{display:block;color:#b7b5a8;font-size:13px;margin-top:8px}
+.trap-disarm__stakes{font:11px/1.45 system-ui,sans-serif;color:#b9b19c;margin:0 0 14px}
+.trap-disarm__action,.trap-disarm__leave{display:block;width:100%;min-height:48px;border:1px solid #9e895b;border-radius:5px;background:linear-gradient(#49432ee8,#252a20f0);color:#fff0ce;font:17px/1.3 Georgia,serif;touch-action:manipulation;user-select:none;-webkit-user-select:none;cursor:pointer}
+.trap-disarm__action:active{background:#62573b}
+.trap-disarm__action:focus-visible,.trap-disarm__leave:focus-visible{outline:2px solid #efdb9f;outline-offset:3px}
+.trap-disarm__leave{margin-top:8px;min-height:40px;background:#08110bb0;border-color:#616350;color:#c0c0ae;font-size:14px}
+.trap-disarm__tap-surface{position:absolute;inset:0;z-index:2;width:100%;height:100%;padding:0;margin:0;border:0;border-radius:0;background:transparent!important;box-shadow:none;color:transparent;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.trap-disarm__tap-surface:focus-visible{outline:2px solid #efdb9f;outline-offset:-6px}
+@media(max-height:650px){.trap-disarm{padding-top:max(12px,var(--app-foreground-safe-top,0px))}.trap-disarm__window{gap:8px}.trap-disarm__header{min-height:54px}.trap-disarm__dial{width:min(88vw,42svh,320px)}.trap-disarm__controls{min-height:210px}.trap-disarm__hint{font-size:13px;margin-bottom:8px}.trap-disarm__stakes{margin-bottom:8px}}
+@media(prefers-reduced-motion:reduce){.trap-disarm__bolt,.trap-disarm__sector-tint{transition:none}}
+
+/* Textured joints and inset relief never change the hit geometry. */
+.trap-disarm__joint{opacity:.48}
+.trap-disarm__sector.is-marked .trap-disarm__joint{opacity:.12}
+.trap-disarm__bevel{fill:none;stroke-width:1.8;stroke-linejoin:round;opacity:.65}
+.trap-disarm__inset-shadow{fill:none;stroke:#040b08;stroke-width:3;opacity:.8}
+.trap-disarm__edge-glint{fill:none;stroke:#ecd7a4;stroke-width:2.5;opacity:0;animation:trap-edge-release .24s ease-out both}
+.trap-disarm__released-mark circle{fill:#233f32;stroke:#9b9d76;stroke-width:.65}
+.trap-disarm__released-mark path{fill:none;stroke:#d2dab3;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.trap-disarm__sector.is-failed .trap-disarm__released-mark circle{fill:#702c23;stroke:#c18367}
+@keyframes trap-edge-release{0%{opacity:.65}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.trap-disarm__edge-glint{animation:none}}

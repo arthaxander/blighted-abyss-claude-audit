@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ashen Abyss Balance Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">ASHEN ABYSS</div>
+      <h1>Balance Lab</h1>
+      <p>Локальный симулятор и поиск эффективных билдов</p>
+    </div>
+    <div id="status" class="status">Загрузка данных…</div>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls">
+      <h2>Сценарий</h2>
+      <div class="grid two">
+        <label>Модель<select id="routeModel"><option value="hex">Гекс-карты · полная зачистка</option><option value="legacy">Прежняя модель окон</option></select></label>
+        <label>Класс<select id="classId"></select></label>
+        <label>Локация<select id="location"></select></label>
+        <label>Профиль<select id="profile"></select></label>
+        <label>Прогонов<input id="runs" type="number" min="1" max="1000000" value="1000"></label>
+        <label>Seed<input id="seed" type="number" value="20260901"></label>
+        <label>Маршрут<select id="routePolicy"></select></label>
+        <label>Бой<select id="combatPolicy"></select></label>
+        <label>Босс<select id="bossPolicy"></select></label>
+      </div>
+
+      <div id="hexControls">
+        <div class="grid two">
+          <label>Крафт<select id="hexCraftPolicy"><option value="off">Выключен</option><option value="moderate" selected>Умеренный</option><option value="prepared">Подготовленный</option></select></label>
+          <label>Приоритет проклятия<select id="preferredCurseId"><option value="">Повышать уже взятое</option></select></label>
+          <label>Алтари<select id="altarPolicy"><option value="accept">Принимать все допустимые</option><option value="up_to_ii">Принимать только до II</option><option value="skip">Пропускать</option></select></label>
+          <label>Карта<select id="templateId"></select></label>
+          <label>Ветка<select id="sublocationSlot"><option value="0">1</option><option value="1">2</option><option value="2">3</option></select></label>
+        </div>
+        <p>Проклятия на входе с предыдущих этажей (0 = нет). Алтарь предлагает два случайных допустимых проклятия. Приоритет выбирается только среди предложенных; иначе повышаем уже взятое, при равенстве — первое. Finder сохраняет эти условия для всех билдов.</p>
+        <div id="initialCurses" class="grid two"></div>
+        <p id="altarRules"></p>
+        <p id="hexNote">Полная зачистка выбранной ветки. Рыбалка, смена найденной экипировки и эвакуация пока не моделируются.</p>
+        <button id="previewButton" class="ghost">Показать карту для seed</button>
+        <div id="mapPreview"></div>
+      </div>
+      <div id="presetCard" class="preset-card"></div>
+
+      <details class="advanced">
+        <summary>Дополнительные настройки <span>необязательно</span></summary>
+
+        <div class="advanced-block">
+          <label class="toggle"><input id="customRelic" type="checkbox"> Переопределить уровень реликвии</label>
+          <input id="relicLevel" type="number" min="0" max="15" value="1" disabled>
+        </div>
+
+        <div class="advanced-block">
+          <label class="toggle"><input id="customAbilities" type="checkbox"> Выбрать активные способности вручную</label>
+          <div id="abilities" class="choice-grid disabled"></div>
+        </div>
+
+        <div class="advanced-block">
+          <label class="toggle"><input id="customPassives" type="checkbox"> Выбрать пассивы вручную</label>
+          <div id="passives" class="choice-grid disabled"></div>
+        </div>
+
+        <div class="advanced-block">
+          <label class="toggle"><input id="customTalents" type="checkbox"> Выбрать таланты вручную</label>
+          <div id="talents" class="stack disabled"></div>
+        </div>
+
+        <div class="advanced-block">
+          <label class="toggle"><input id="customEquipment" type="checkbox"> Выбрать экипировку вручную</label>
+          <div id="equipment" class="grid two disabled"></div>
+        </div>
+
+        <div class="advanced-block">
+          <label class="toggle"><input id="customConsumables" type="checkbox"> Выбрать расходники вручную</label>
+          <div id="consumables" class="consumable-grid disabled"></div>
+        </div>
+      </details>
+
+      <div class="actions">
+        <button id="runButton" class="primary">Запустить симуляцию</button>
+        <button id="cancelButton" class="ghost" disabled>Отмена</button>
+      </div>
+
+      <hr>
+
+      <div class="finder-heading">
+        <div>
+          <h2>Build Finder</h2>
+          <p>Оптимизирует шанс пройти маршрут и победить босса. Ищет Top 3–5 для выбранного класса, профиля и локации. Поиск ступенчатый: это лучшие найденные кандидаты, а не полный перебор всех сочетаний.</p>
+        </div>
+      </div>
+      <div class="grid three compact">
+        <label>Screening<input id="screeningRuns" type="number" min="10" max="500" value="30"></label>
+        <label>Final<input id="finalRuns" type="number" min="100" max="20000" value="500"></label>
+        <label>Билдов в топе<select id="topCount"><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option></select></label>
+        <label>Beam<input id="beamWidth" type="number" min="3" max="30" value="8"></label>
+      </div>
+      <p>Отметь, что разрешено менять. Остальные части выбранной сборки сохраняются. Финальная проверка использует новые общие seed.</p>
+      <div class="finder-options">
+        <label><input id="optimizeEquipment" type="checkbox" checked> Экипировка</label>
+        <label><input id="optimizeAbilities" type="checkbox" checked> Способности</label>
+        <label><input id="optimizePassives" type="checkbox" checked> Пассивы</label>
+        <label><input id="optimizeTalents" type="checkbox" checked> Таланты</label>
+      </div>
+      <button id="finderButton" class="secondary">Найти лучшие билды</button>
+    </section>
+
+    <section class="panel results">
+      <div class="results-head">
+        <div>
+          <div class="eyebrow">RESULTS</div>
+          <h2 id="resultTitle">Отчёт появится здесь</h2>
+        </div>
+        <div id="exportButtons" class="export-buttons hidden">
+          <button id="copyMd" class="ghost">Копировать отчёт</button>
+          <button id="exportMd" class="ghost">Сохранить .md</button>
+          <button id="exportJson" class="ghost">Сохранить .json</button>
+        </div>
+      </div>
+      <div id="progressBox" class="progress-box hidden">
+        <div class="progress-row"><span id="progressText">Выполняется…</span><span id="progressNumbers"></span></div>
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+      </div>
+      <div id="resultBody" class="empty-state">
+        Выбери готовый профиль и нажми «Запустить симуляцию». Экипировку, способности и таланты трогать необязательно.
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

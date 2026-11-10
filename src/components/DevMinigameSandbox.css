@@ -1,0 +1,26 @@
+.dev-minigame-sandbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2190;
+  overflow: hidden;
+  background: #071011;
+  isolation: isolate;
+  contain: paint;
+}
+
+.dev-minigame-sandbox__exit {
+  position: fixed;
+  z-index: 4000;
+  top: max(10px, calc(env(safe-area-inset-top) + 6px));
+  right: max(10px, calc(env(safe-area-inset-right) + 6px));
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(218, 202, 158, .72);
+  border-radius: 50%;
+  background: rgba(12, 18, 15, .9);
+  color: #eee8d8;
+  box-shadow: 0 3px 16px rgba(0, 0, 0, .75);
+  font: 28px/1 sans-serif;
+  pointer-events: auto;
+}

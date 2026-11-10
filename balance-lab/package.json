@@ -1,0 +1,53 @@
+{
+  "name": "ashen-abyss-balance-lab",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable",
+    "dist:dir": "electron-builder --dir",
+    "smoke": "node smoke.cjs"
+  },
+  "dependencies": {
+    "@babel/core": "^7.28.4",
+    "babel-preset-react-app": "^10.1.0"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "games.arthaxan.ashenabyss.balancelab",
+    "productName": "Ashen Abyss Balance Lab",
+    "asar": false,
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "worker.cjs",
+      "smoke.cjs",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../src",
+        "to": "src",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Ashen-Abyss-Balance-Lab-${version}.exe"
+    }
+  }
+}

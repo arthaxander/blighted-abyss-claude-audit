@@ -1,0 +1,52 @@
+const test=require('node:test'); const assert=require('node:assert/strict'); const fs=require('node:fs'); const os=require('node:os'); const path=require('node:path'); const {createApi}=require('../app'); const {SqliteAccountRepository}=require('../accountRepository');
+const start=async(env={})=>{const repo=new SqliteAccountRepository(path.join(fs.mkdtempSync(path.join(os.tmpdir(),'ashen-api-')),'db.sqlite')); const server=createApi({repository:repo,env:{NODE_ENV:'test',ALLOW_DEV_AUTH:'true',DEV_TELEGRAM_USER_ID:'9007199254740993',SESSION_SECRET:'synthetic-session-secret',...env}}); await new Promise(r=>server.listen(0,r)); const base=`http://127.0.0.1:${server.address().port}`; return {repo,server,base};};
+const call=async(base,path,options={})=>{const response=await fetch(base+path,{headers:{'content-type':'application/json',...(options.headers||{})},...options}); const body=response.status===204?null:await response.json(); return {response,body,cookie:response.headers.get('set-cookie')?.split(';')[0]};};
+test('health endpoint exposes the backend build revision for deployment checks',async()=>{const x=await start({BUILD_REVISION:'test-sha'}); const health=await call(x.base,'/api/health'); assert.equal(health.response.status,200); assert.deepEqual(health.body,{status:'ok',revision:'test-sha'}); x.server.close(); x.repo.close();});
+test('credentialed CORS headers are preserved on preflight and Telegram auth errors',async()=>{const origin='https://ashen-abyss-mini-app.vercel.app'; const x=await start({FRONTEND_ORIGIN:origin,TELEGRAM_BOT_TOKEN:'123456:test-token'}); const preflight=await fetch(x.base+'/api/auth/telegram',{method:'OPTIONS',headers:{origin}}); assert.equal(preflight.status,204); assert.equal(preflight.headers.get('access-control-allow-origin'),origin); assert.equal(preflight.headers.get('access-control-allow-credentials'),'true'); assert.match(preflight.headers.get('access-control-allow-methods'),/POST/); const failed=await call(x.base,'/api/auth/telegram',{method:'POST',headers:{origin},body:JSON.stringify({initData:'auth_date=1&hash='+'0'.repeat(64)})}); assert.equal(failed.response.status,401); assert.equal(failed.response.headers.get('access-control-allow-origin'),origin); assert.equal(failed.response.headers.get('access-control-allow-credentials'),'true'); x.server.close(); x.repo.close();});
+test('authenticated sessions load, name, save, and reject stale writes without trusting a body user ID',async()=>{const x=await start(); const auth=await call(x.base,'/api/auth/dev',{method:'POST',body:'{}'}); assert.equal(auth.response.status,200); assert.equal(auth.body.account.gameName,null); const loaded=await call(x.base,'/api/account',{headers:{cookie:auth.cookie}}); assert.equal(loaded.response.status,200); assert.ok(Number.isFinite(Date.parse(loaded.body.serverTime))); const named=await call(x.base,'/api/account/name',{method:'PUT',headers:{cookie:auth.cookie},body:JSON.stringify({name:'Следопыт'})}); assert.equal(named.body.account.gameName,'Следопыт'); const saved=await call(x.base,'/api/save',{method:'PUT',headers:{cookie:auth.cookie},body:JSON.stringify({telegramUserId:'attacker',revision:0,schemaVersion:1,save:{player:{silver:77}}})}); assert.equal(saved.body.account.telegramUserId,'9007199254740993'); const stale=await call(x.base,'/api/save',{method:'PUT',headers:{cookie:auth.cookie},body:JSON.stringify({revision:0,save:{player:{silver:0}}})}); assert.equal(stale.response.status,409); const second=await call(x.base,'/api/auth/dev',{method:'POST',body:'{}'}); assert.equal(second.body.account.save.player.silver,77); x.server.close(); x.repo.close();});
+test('production cannot enable the dev authentication endpoint',async()=>{const repo=new SqliteAccountRepository(':memory:'); const server=createApi({repository:repo,env:{NODE_ENV:'production',ALLOW_DEV_AUTH:'true',SESSION_SECRET:'x'}}); await new Promise(r=>server.listen(0,r)); const result=await call(`http://127.0.0.1:${server.address().port}`,'/api/auth/dev',{method:'POST',body:'{}'}); assert.equal(result.response.status,404); server.close(); repo.close();});
+test('legacy level-four Last Stand survives authoritative migration, save, and reload',async()=>{const x=await start();const auth=await call(x.base,'/api/auth/dev',{method:'POST',body:'{}'});const id=auth.body.account.telegramUserId;const legacyRecord={schemaVersion:1,classLevel:4,cumulativeClassXp:450,earnedClassPoints:3,spentClassPoints:1,unlockedSkillIds:['Стойкость','Устрашение','Кровавый таран','Удар щитом'],activeSkillIds:['Стойкость','Устрашение','Кровавый таран','Удар щитом'],purchases:{last_stand:{type:'passiveSkill',cost:1}},purchasedPassiveIds:['last_stand'],equippedPassiveIds:['last_stand'],talentSelections:{}};const legacyProgression={Defender:legacyRecord};x.repo.save(id,{player:{class:'Defender',classProgression:legacyProgression},classProgression:legacyProgression},0,6);const migratedRecord={...legacyRecord,schemaVersion:2};const migratedProgression={Defender:migratedRecord};const saved=await call(x.base,'/api/save',{method:'PUT',headers:{cookie:auth.cookie},body:JSON.stringify({revision:1,schemaVersion:7,save:{player:{class:'Defender',classProgression:migratedProgression},classProgression:migratedProgression}})});assert.equal(saved.response.status,200);assert.deepEqual(saved.body.account.save.classProgression.Defender.purchasedPassiveIds,['last_stand']);assert.equal(saved.body.account.save.classProgression.Defender.spentClassPoints,1);assert.deepEqual(saved.body.account.save.classProgression.Defender.equippedPassiveIds,['last_stand']);const reloaded=await call(x.base,'/api/account',{headers:{cookie:auth.cookie}});assert.deepEqual(reloaded.body.account.save.classProgression.Defender,migratedRecord);x.server.close();x.repo.close()});
+
+test('corrupt save is isolated behind an authenticated, revision-protected reset and remains archived',async()=>{
+ const x=await start(); const auth=await call(x.base,'/api/auth/dev',{method:'POST',body:'{}'});
+ const id=auth.body.account.telegramUserId;
+ x.repo.setName(id,'Следопыт');
+ x.repo.db.prepare('UPDATE game_accounts SET save_payload = ?, save_revision = ? WHERE telegram_user_id = ?').run('{corrupted-json',2,id);
+ const login=await call(x.base,'/api/auth/dev',{method:'POST',body:'{}'});
+ assert.equal(login.response.status,200);
+ assert.equal(login.body.account.saveCorrupt,true);
+ assert.equal(login.body.account.gameName,'Следопыт');
+ const loaded=await call(x.base,'/api/account',{headers:{cookie:auth.cookie}});
+ assert.equal(loaded.response.status,200);
+ assert.equal(loaded.body.account.save,null);
+ assert.equal(loaded.body.account.saveCorrupt,true);
+ const anonymous=await call(x.base,'/api/save/reset',{method:'POST',body:JSON.stringify({revision:2})});
+ assert.equal(anonymous.response.status,401);
+ const wrongRevision=await call(x.base,'/api/save/reset',{method:'POST',headers:{cookie:auth.cookie},body:JSON.stringify({revision:1})});
+ assert.equal(wrongRevision.response.status,409);
+ const reset=await call(x.base,'/api/save/reset',{method:'POST',headers:{cookie:auth.cookie},body:JSON.stringify({revision:2})});
+ assert.equal(reset.response.status,200);
+ assert.equal(reset.body.account.revision,3);
+ assert.equal(reset.body.account.save,null);
+ assert.equal(reset.body.account.saveCorrupt,false);
+ assert.equal(reset.body.account.gameName,'Следопыт');
+ assert.equal(x.repo.db.prepare('SELECT raw_payload FROM save_recovery_archive WHERE telegram_user_id = ?').get(id).raw_payload,'{corrupted-json');
+ const stale=await call(x.base,'/api/save/reset',{method:'POST',headers:{cookie:auth.cookie},body:JSON.stringify({revision:2})});
+ assert.equal(stale.response.status,409);
+ const another=await call(x.base,'/api/account',{headers:{cookie:auth.cookie}});
+ assert.equal(another.body.account.revision,3);
+ x.server.close();x.repo.close();
+});
+
+test('authenticated player can intentionally reset a structurally incompatible but valid JSON save',async()=>{
+ const x=await start();const auth=await call(x.base,'/api/auth/dev',{method:'POST',body:'{}'});
+ const id=auth.body.account.telegramUserId;x.repo.setName(id,'Маг');
+ x.repo.save(id,{player:'invalid-player-but-valid-JSON',carryOverItems:{}},0,7);
+ const reset=await call(x.base,'/api/save/reset',{method:'POST',headers:{cookie:auth.cookie},body:JSON.stringify({revision:1})});
+ assert.equal(reset.response.status,200);
+ assert.equal(reset.body.account.gameName,'Маг');
+ assert.equal(reset.body.account.save,null);
+ assert.equal(reset.body.account.revision,2);
+ assert.deepEqual(JSON.parse(x.repo.db.prepare('SELECT raw_payload FROM save_recovery_archive WHERE telegram_user_id = ?').get(id).raw_payload),{player:'invalid-player-but-valid-JSON',carryOverItems:{}});
+ x.server.close();x.repo.close();
+});

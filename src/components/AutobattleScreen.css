@@ -1,0 +1,12 @@
+.autobattle-screen { min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; box-sizing: border-box; background: #141216; color: #eee4d7; }
+.autobattle-screen__card { width: min(100%, 440px); padding: 24px; box-sizing: border-box; border: 1px solid #69533d; border-radius: 12px; background: #221d20; }
+.autobattle-screen__card h2 { margin-top: 0; }
+.autobattle-screen__card small { display: block; color: #bdb0a5; line-height: 1.5; }
+.autobattle-screen__actions { display: grid; gap: 12px; margin: 24px 0; }
+.autobattle-screen__actions button { min-height: 48px; padding: 10px 14px; border: 1px solid #9c7b50; border-radius: 6px; background: #463627; color: #fff0da; font: inherit; cursor: pointer; }
+.autobattle-screen__actions button:disabled { opacity: .5; cursor: wait; }
+
+.autobattle-screen__hp-delta { color:#c8b8a3; font-size:.88em; }
+.autobattle-screen__item-link { display:inline; min-height:0; padding:0; border:0; background:transparent; color:#e0c78b; font:inherit; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.autobattle-screen__item-link:focus-visible { outline:2px solid #d9c27f; outline-offset:2px; }
+

@@ -1,0 +1,71 @@
+.enemy-detail-overlay { position:fixed; inset:0; z-index:1800; display:grid; place-items:center; padding:max(12px,var(--app-foreground-safe-top)) max(10px,var(--app-content-safe-right)) max(12px,var(--app-content-safe-bottom)) max(10px,var(--app-content-safe-left)); box-sizing:border-box; background:#070609d9; backdrop-filter:blur(2px); }
+.enemy-detail-card { position:relative; width:min(100%,440px); max-height:100%; overflow-y:auto; overscroll-behavior:contain; padding:12px 12px 18px; box-sizing:border-box; border:1px solid #675d50; border-radius:15px; background:#171519; box-shadow:0 18px 55px #000d; color:#eee8de; font-family:serif; scrollbar-color:#625747 #171519; }
+.enemy-detail-close { position:sticky; top:0; z-index:4; float:right; width:42px; height:42px; margin:0; display:grid; place-items:center; border:1px solid #756a59; border-radius:50%; background:#211f22ed; color:#eee8de; font:26px/1 sans-serif; cursor:pointer; }
+.enemy-detail-header { clear:both; display:grid; grid-template-columns:minmax(118px,42%) minmax(0,1fr); align-items:end; gap:14px; margin-top:-32px; padding:0 2px 14px; border-bottom:1px solid #3b3736; }
+.enemy-detail-portrait { aspect-ratio:3/4; overflow:hidden; border:1px solid #62594c; border-radius:11px; background:#09090b; box-shadow:0 7px 18px #0009; }
+.enemy-detail-portrait img { width:100%; height:100%; display:block; object-fit:cover; object-position:center top; }
+.enemy-detail-identity { min-width:0; padding-bottom:5px; }
+.enemy-detail-identity h2 { margin:7px 0 6px; overflow-wrap:anywhere; color:#f3ead8; font-size:clamp(21px,7vw,29px); line-height:1.04; }
+.enemy-detail-category,.enemy-detail-location { display:inline-block; color:#cdbf9f; font:700 11px/1.2 sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+.enemy-detail-location { color:#9f978d; font-weight:500; letter-spacing:.03em; text-transform:none; }
+.enemy-detail-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin:12px 0; }
+.enemy-detail-stat { min-width:0; padding:8px 9px; display:flex; align-items:baseline; justify-content:space-between; gap:6px; border:1px solid #373435; border-radius:8px; background:#111014; }
+.enemy-detail-stat--hp { grid-column:span 2; border-color:#4b443b; }
+.enemy-detail-stat span { color:#a9a097; font:11px/1.2 sans-serif; }
+.enemy-detail-stat strong { overflow-wrap:anywhere; color:#eee6d8; font:700 14px/1.2 sans-serif; text-align:right; }
+.enemy-detail-statuses { display:block; margin:0 0 14px; }
+.enemy-detail-statuses .player-combat-status-list { width:100%; }
+.enemy-detail-traits{margin-top:12px}.enemy-detail-traits h3{margin:0 0 6px}.enemy-detail-trait{display:grid;gap:3px;padding:8px;border:1px solid #665b47;border-radius:7px;background:#211e19}.enemy-detail-trait+.enemy-detail-trait{margin-top:6px}.enemy-detail-trait strong{color:#d6c294}.enemy-detail-trait span{color:#b8b0a4;font-size:12px}
+.enemy-detail-section { margin-top:17px; }
+.enemy-detail-section h3 { margin:0 0 8px; color:#d8cbaE; font-size:14px; line-height:1.2; letter-spacing:.08em; text-transform:uppercase; }
+.enemy-detail-ability-list { display:grid; gap:7px; }
+.enemy-detail-ability { overflow:hidden; border:1px solid #403c3b; border-radius:10px; background:#111014; }
+.enemy-detail-ability.is-passive { border-color:#4c493d; background:#15140f; }
+.enemy-detail-ability-toggle { width:100%; min-height:68px; padding:7px; display:grid; grid-template-columns:54px minmax(0,1fr) 22px; align-items:center; gap:10px; border:0; background:transparent; color:inherit; text-align:left; cursor:pointer; }
+.enemy-detail-ability-toggle:focus-visible { outline:2px solid #d9c27f; outline-offset:-3px; }
+.enemy-detail-ability-art { width:54px; height:54px; display:grid; place-items:center; overflow:hidden; border:1px solid #534c43; border-radius:8px; background:#242125; }
+.enemy-detail-ability-art img { width:100%; height:100%; display:block; object-fit:cover; }
+.enemy-detail-ability-fallback { color:#827b70; font-size:24px; }
+.enemy-detail-ability-copy { min-width:0; display:grid; gap:6px; }
+.enemy-detail-ability-copy strong { overflow-wrap:anywhere; color:#eee8df; font-size:15px; line-height:1.18; }
+.enemy-detail-ability-meta { display:flex; flex-wrap:wrap; gap:4px; }
+.enemy-detail-ability-meta span { padding:2px 6px; border:1px solid #494541; border-radius:999px; color:#bdb4a8; font:10px/1.3 sans-serif; }
+.is-passive .enemy-detail-ability-meta span { border-color:#5d5744; color:#d1bf8d; }
+.enemy-detail-chevron { color:#9f978b; font:20px/1 sans-serif; transition:transform 150ms ease; }
+.enemy-detail-ability-toggle[aria-expanded="true"] .enemy-detail-chevron { transform:rotate(180deg); }
+.enemy-detail-ability-description { padding:9px 12px 12px 71px; border-top:1px solid #353233; color:#c8c0b7; font:13px/1.5 sans-serif; overflow-wrap:anywhere; }
+.enemy-detail-ability-description.is-compact { margin-bottom:10px; padding:9px 0; border-top:0; }
+.enemy-detail-ability-description>p { margin:0; }
+.enemy-detail-status-reference { min-height:24px; margin:-3px 1px; padding:1px 2px; border:0; background:transparent; color:#e3ca86; font:600 inherit; text-decoration:none; cursor:pointer; }
+.enemy-detail-status-reference:focus-visible { outline:2px solid #d9c27f; outline-offset:1px; border-radius:3px; }
+.player-combat-detail-card .enemy-detail-portrait.is-summon{width:min(180px,42vw);aspect-ratio:4/3}.player-combat-detail-card .enemy-detail-portrait.is-square{width:min(120px,32vw);aspect-ratio:1}.player-combat-detail-card .enemy-detail-portrait.is-summon img,.player-combat-detail-card .enemy-detail-portrait.is-square img{width:100%;height:100%;object-fit:cover}
+.enemy-detail-status-info { margin-top:10px; padding:9px 10px; border:1px solid #5d543e; border-radius:8px; background:#211d16; color:#ddd4c5; }
+.enemy-detail-status-info>div { display:flex; align-items:center; justify-content:space-between; gap:8px; color:#f0d998; }
+.enemy-detail-status-info button { width:30px; height:30px; padding:0; border:1px solid #665d4b; border-radius:50%; background:#171519; color:#eee8de; font:18px/1 sans-serif; }
+.enemy-detail-status-info p { margin:7px 0 0; line-height:1.45; }
+.enemy-detail-empty { clear:both; padding:55px 12px 25px; color:#c9c1b7; text-align:center; }
+@media (max-width:340px) { .enemy-detail-header { grid-template-columns:105px minmax(0,1fr); gap:10px; } .enemy-detail-ability-description { padding-left:12px; } }
+@media (min-width:600px) { .enemy-detail-card { padding:16px 16px 22px; } .enemy-detail-header { grid-template-columns:155px minmax(0,1fr); } }
+.player-combat-status-list { display:grid; gap:6px; }
+.player-combat-status { display:grid; grid-template-columns:24px minmax(0,1fr) auto; align-items:center; gap:7px; padding:7px 8px; border-bottom:1px solid #353233; color:#c8c0b7; font:13px/1.35 sans-serif; }
+.player-combat-status__icon { width:24px; height:24px; display:grid; place-items:center; overflow:hidden; border-radius:5px; font-size:17px; text-align:center; background:#252b30; }
+.player-combat-status__icon img { width:100%; height:100%; object-fit:cover; }
+.player-combat-status>div>p { margin:0; }
+.player-combat-status>small { color:#9f978d; white-space:nowrap; }
+.player-combat-status .enemy-detail-status-info { grid-column:1/-1; }
+.player-combat-passive { padding:10px 1px; border-bottom:1px solid #353233; color:#c8c0b7; font:13px/1.5 sans-serif; }
+.player-combat-passive:last-child { border-bottom:0; }
+.player-combat-passive h4 { margin:0 0 4px; color:#e2d4b2; font-size:14px; }
+.player-combat-passive p { margin:3px 0; }
+.player-combat-passive__state { display:block; margin-top:3px; color:#aaa198; font:11px/1.3 sans-serif; }
+.player-combat-passive__empty { color:#8e877f; font-style:italic; }
+.combat-stat-label { display:flex; align-items:center; gap:3px; }
+.defense-info-button { width:36px; height:36px; min-height:36px; margin:-10px -8px -10px 0; padding:0; border:0; background:transparent; color:#d8cbae; font:16px/1 sans-serif; cursor:pointer; }
+.defense-info-button:focus-visible { outline:2px solid #d9c27f; border-radius:50%; }
+.defense-info-overlay { position:fixed; inset:0; z-index:var(--overlay-layer-defense-info,4800); display:grid; place-items:center; box-sizing:border-box; padding:max(16px,var(--app-foreground-safe-top,0px)) max(16px,var(--app-content-safe-right,0px)) max(16px,var(--app-content-safe-bottom,0px)) max(16px,var(--app-content-safe-left,0px)); background:#070609b8; }
+.defense-info-dialog { width:min(360px,100%); max-height:100%; overflow-y:auto; overscroll-behavior:contain; box-sizing:border-box; padding:18px; border:1px solid #675d50; border-radius:12px; background:#1b181c; box-shadow:0 18px 55px #000d; color:#eee8de; font-family:serif; }
+.defense-info-dialog h3 { margin:0 0 12px; color:#f0d998; }
+.defense-info-dialog p { margin:8px 0; color:#c8c0b7; font:13px/1.5 sans-serif; }
+.defense-info-dialog button { width:100%; min-height:42px; margin-top:8px; border:1px solid #756a59; border-radius:8px; background:#29252a; color:#eee8de; }
+.enemy-detail-ability-header{display:flex;align-items:center;gap:10px;margin:0 0 9px}.enemy-detail-ability-header img{width:48px;height:48px;flex:0 0 48px;border-radius:8px;object-fit:cover}.enemy-detail-ability-header strong{color:#eee5d8;font:700 16px/1.2 serif}
+

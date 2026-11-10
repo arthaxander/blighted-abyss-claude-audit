@@ -1,0 +1,135 @@
+.progression-feedback-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2600;
+  background: #09080b70;
+  opacity: 1;
+  transition: opacity 250ms ease;
+  pointer-events: auto;
+}
+
+.progression-feedback-layer.is-appearing,
+.progression-feedback-layer.is-exiting {
+  opacity: 0;
+}
+
+.progression-feedback-layer.is-exiting {
+  transition-duration: 250ms;
+}
+
+.progression-feedback {
+  position: absolute;
+  left: 50%;
+  top: 42.5vh;
+  transform: translate(-50%, -50%);
+  width: min(380px, calc(100vw - 28px));
+  max-height: min(78dvh, 560px);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid #88704d;
+  border-radius: 11px;
+  background: #171419f5;
+  color: #eee7db;
+  box-shadow: 0 14px 40px #000d;
+  text-align: left;
+}
+
+.progression-feedback h2 {
+  margin: 0 0 12px;
+  color: #f1e2c5;
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.progression-feedback__row {
+  display: grid;
+  gap: 5px;
+  border-radius: 7px;
+  outline: 1px solid transparent;
+}
+
+.progression-feedback__row + .progression-feedback__row { margin-top: 12px; }
+
+.progression-feedback__identity {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.progression-feedback__identity strong { min-width: 0; }
+.progression-feedback__identity b { color: #d8bb7c; font-size: .78rem; white-space: nowrap; }
+.progression-feedback__row.is-level-up strong { color: var(--guild-accent-strong); }
+.progression-feedback__level-number { display: inline-block; transform-origin: center; }
+
+.progression-feedback__track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #312b34;
+}
+
+.progression-feedback__track span {
+  display: block;
+  height: 100%;
+  background: #b9924f;
+  transition: width var(--progression-progress-duration) ease;
+}
+
+.progression-feedback__row[data-progression-kind="class"] .progression-feedback__track span { background: var(--guild-accent); }
+
+.progression-feedback-layer.is-animating .progression-feedback__row.is-level-up .progression-feedback__track span {
+  transition-duration: var(--progression-level-threshold-duration);
+}
+
+.progression-feedback__row.is-level-up-emphasis {
+  animation: progression-class-row-accent var(--progression-level-emphasis-duration) ease-out;
+}
+
+.progression-feedback__row.is-level-up-emphasis .progression-feedback__track span {
+  animation: progression-full-bar-brighten var(--progression-level-emphasis-duration) ease-out;
+}
+
+.progression-feedback-layer.is-overflow .progression-feedback__row.is-level-up .progression-feedback__track span {
+  transition-duration: var(--progression-level-overflow-duration);
+}
+
+.progression-feedback__level-number.is-prominent {
+  animation: progression-level-number-punch var(--progression-level-punch-duration) ease-out;
+}
+
+.progression-feedback__row small { color: #bcb2a9; font-size: .76rem; }
+.progression-feedback__notice,
+.progression-feedback__unlock { margin-top: 8px; color: #f2d686; font-size: .82rem; line-height: 1.35; }
+.progression-feedback__unlock { color: #b9dca8; }
+
+@keyframes progression-class-row-accent {
+  0%, 100% { outline-color: transparent; box-shadow: none; }
+  30%, 75% { outline-color: var(--guild-accent-strong); box-shadow: 0 0 14px var(--guild-accent-glow), inset 0 0 10px var(--guild-accent-soft); }
+}
+
+@keyframes progression-full-bar-brighten {
+  0%, 100% { filter: brightness(1); }
+  45% { filter: brightness(1.35); }
+}
+
+@keyframes progression-level-number-punch {
+  0% { transform: scale(1.36); color: var(--guild-accent-strong); text-shadow: 0 0 10px var(--guild-accent-glow); }
+  100% { transform: scale(1); color: inherit; text-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progression-feedback-layer,
+  .progression-feedback__track span { transition-duration: 1ms !important; }
+  .progression-feedback__row.is-level-up-emphasis,
+  .progression-feedback__row.is-level-up-emphasis .progression-feedback__track span,
+  .progression-feedback__level-number.is-prominent { animation: none; }
+}
+
+@media (max-width: 380px) {
+  .progression-feedback { width: calc(100vw - 20px); padding: 13px; }
+  .progression-feedback__identity { gap: 4px; }
+  .progression-feedback__identity strong { font-size: .88rem; }
+}

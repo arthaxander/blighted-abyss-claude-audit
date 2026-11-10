@@ -1,0 +1,20 @@
+[
+  {
+    "id": "withering_forest",
+    "name": "Лес Увядания",
+    "description": "Древняя чаща, где жизнь и тлен сплелись воедино.",
+    "enabled": true
+  },
+  {
+    "id": "restless_ruins",
+    "name": "Руины Неупокоенных",
+    "description": "Безмолвные залы под пеплом Бездны.",
+    "enabled": true
+  },
+  {
+    "id": "mines_of_decay",
+    "name": "Шахты Тления",
+    "description": "Обугленные копи, где тлеют рудные жилы и не кончается смена.",
+    "enabled": true
+  }
+]

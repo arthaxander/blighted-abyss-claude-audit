@@ -1,0 +1,55 @@
+{
+  "name": "ashen-abyss",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "assets:manifest": "node scripts/generate-image-bundles.cjs",
+    "build": "REACT_APP_BUILD_REVISION=$(git rev-parse --short HEAD 2>/dev/null || echo unknown) react-scripts build",
+    "simulate:runs": "node scripts/simulate-runs.js",
+    "simulate:combat": "node scripts/simulate-combat.js",
+    "verify:blade-master-promotion": "node scripts/verify-blade-master-promotion.js",
+    "simulate:balance-report": "node scripts/generate-threat-aware-balance-report.js",
+    "test": "react-scripts test",
+    "test:combat-regression": "react-scripts test --watchAll=false --runInBand --testPathPattern='(autobattleUnlocks|autobattle|autobattlePersistence|App\\.combatLifecycle|usePersistentGameState|AutobattleScreen(\\.integration)?|combatExecution|elementalistCharges|elementalistSimulationPolicy|combatSimulator|FieldLoadoutPanel|fieldCraftingLoadout|DungeonScreen|simulationPlayerProfiles|fieldConsumables\\.integration|hexCraftingSimulator|FieldCraftingModal|expeditionCrafting|inventoryItemUse|typedExpeditionInventory|combatRunPersistence|craftingEconomy|encounterRewards|playerFacingCopy|equipmentCatalog\\.regression|periodicDamageContext\\.characterization|craftingSpecialMechanics|combatStatusResources|l1CombatRules|effectTurnSummonPhases|effectTurnPhases|allyBattlefield|enemyBattlefield|defenderDamageBalance|defenderFinalTalents|defenderShockwaveShieldThrowTalents|defenderFortitudeIntimidationTalents|defenderStarterTalents|elementalistPassives|elementalistCoreTalents|elementalistEchoTalents|elementalistLightningSummon|elementalistIceSummon|elementalistFrostShieldDenseIce|elementalistFrostShieldShardArmor|elementalistStormDischargeTalents|elementalistChainLightningTalents|elementalistGreaterFireTalent|archerClassFeature|witheringForestEntanglement(\\.integration)?|primordialItems|levelTwoLootOwnership|minesLocationMechanics(\\.integration)?|ratRiderOpeningTempo|minesOfDecayRoster|restlessRuinsRoster(\\.integration)?|minesEquipment\\.integration|combatPresentationEvents|CombatScreen\\.statusLayout|combatRelink\\.integration|tornRitualCounterattack|savedCombatPersistence\\.integration)\\.test\\.js$'",
+    "eject": "react-scripts eject",
+    "server": "node --experimental-sqlite server/index.js",
+    "test:server": "node --experimental-sqlite --test server/__tests__/*.test.js",
+    "check:server": "node --check server/index.js && node --check server/app.js",
+    "balance-lab": "npm --prefix balance-lab start",
+    "balance-lab:dist": "npm --prefix balance-lab run dist",
+    "simulate:field-crafting": "node scripts/simulate-field-crafting.js",
+    "test:field-crafting": "react-scripts test --watchAll=false --runInBand --testPathPattern='(autobattleUnlocks|autobattle|autobattlePersistence|App\\.combatLifecycle|usePersistentGameState|AutobattleScreen(\\.integration)?|combatExecution|elementalistCharges|elementalistSimulationPolicy|combatSimulator|FieldLoadoutPanel|fieldCraftingLoadout|DungeonScreen|simulationPlayerProfiles|fieldConsumables\\.integration|fieldCraftingPolicy|hexCraftingSimulator|FieldCraftingModal|expeditionCrafting|inventoryItemUse|typedExpeditionInventory|combatRunPersistence|craftingEconomy|encounterRewards)\\.test\\.js$'",
+    "test:expedition-maps": "react-scripts test --watchAll=false --runInBand --testPathPattern=\"(expedition(LocationLayouts|MapLayout|MapRun|MapTravel|Map|MapProjection)|goblinCaverns|dungeonRunState|ExpeditionMapScreen[.]art|hexExpeditionSimulator)[.]test[.]js$\"",
+    "test:goblin-map": "react-scripts test --watchAll=false --runInBand --testPathPattern=\"(goblinCaverns|ExpeditionMapScreen[.]art)[.]test[.]js$\"",
+    "audit:goblin-map": "node scripts/audit-goblin-caverns.cjs"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

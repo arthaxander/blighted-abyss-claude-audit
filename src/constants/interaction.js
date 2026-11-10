@@ -1,0 +1,3 @@
+export const GAMEPLAY_DRAG_ACTIVATION_DISTANCE = 5;
+export const TOUCH_DRAG_HOLD_MS = 200;
+export const TOUCH_DRAG_MOVE_TOLERANCE = 8;

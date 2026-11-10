@@ -1,0 +1,35 @@
+.guild-dev-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2900;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  overflow: hidden;
+  background: rgba(2, 6, 4, .82);
+}
+
+.guild-dev-dialog {
+  box-sizing: border-box;
+  width: min(420px, calc(100vw - 24px));
+  max-width: 100%;
+  max-height: calc(100dvh - 24px);
+  overflow: hidden;
+  border: 1px solid #6f674a;
+  border-radius: 12px;
+  background: linear-gradient(155deg, #18231c, #0d130f);
+  color: #e8e4d5;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, .85);
+}
+
+.guild-dev-dialog__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 8px 14px; border-bottom: 1px solid #4c513d; }
+.guild-dev-dialog__header h2 { margin: 0; color: #d7c79c; font-size: 1.1rem; }
+.guild-dev-dialog__close { width: 44px; height: 44px; padding: 0; border: 1px solid #6f674a; border-radius: 8px; background: #202a22; color: #eee8d8; font: 26px/1 sans-serif; }
+.guild-dev-dialog__content { display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; max-height: calc(100dvh - 87px); padding: 12px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; }
+.guild-dev-dialog__content label { display: flex; flex-direction: column; gap: 5px; min-width: 0; color: #c9c5b5; }
+.guild-dev-dialog__content select { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 7px; border: 1px solid #5c654d; border-radius: 7px; background: #111a14; color: #eee; }
+.guild-dev-dialog__content button { min-height: 44px; padding: 8px 10px; border: 1px solid #5c654d; border-radius: 7px; background: #243026; color: #eee; }
+.guild-dev-dialog__content button:disabled { opacity: .45; }
+.guild-dev-dialog__content h3 { margin: 7px 0 0; color: #c8b986; font-size: .95rem; }
+.guild-dev-audio{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:5px;padding-top:8px;border-top:1px solid #4c513d}.guild-dev-audio h3,.guild-dev-audio dl{grid-column:1/-1}.guild-dev-audio dl{display:grid;gap:3px;margin:0;font:11px/1.25 monospace}.guild-dev-audio dl div{display:grid;grid-template-columns:minmax(110px,42%) minmax(0,1fr);gap:6px}.guild-dev-audio dt{color:#aaa}.guild-dev-audio dd{min-width:0;margin:0;overflow-wrap:anywhere;color:#ddd}

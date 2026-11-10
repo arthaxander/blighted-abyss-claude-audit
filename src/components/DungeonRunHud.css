@@ -1,0 +1,113 @@
+.dungeon-run-hud { margin: 8px 0 14px; }
+
+.dungeon-effect-row,
+.dungeon-utility-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.dungeon-effect-row {
+  gap: clamp(4px, 1.2vw, 6px);
+  margin-bottom: 9px;
+}
+
+.dungeon-utility-row { gap: 8px; }
+
+.dungeon-effect-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 1 42px;
+  width: clamp(36px, calc((100% - 36px) / 7), 42px);
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 1px solid #655d51;
+  border-radius: 7px;
+  color: #e4d7c3;
+  background: linear-gradient(145deg, #39342d, #24211e);
+  font: 700 1rem Georgia, serif;
+  cursor: pointer;
+}
+
+.dungeon-effect-icon--location { border-color: #687268; color: #b8c5ae; }
+.dungeon-effect-icon--curse { border-color: var(--curse-accent, #774b55); color: var(--curse-accent, #d49aaa); }
+.dungeon-effect-icon--dominant { box-shadow: 0 0 0 2px #cbb58b, 0 0 12px rgba(190, 166, 119, .28); }
+.dungeon-effect-icon--tarot { border-color: #695c7b; color: #c1acd9; }
+
+.dungeon-utility-button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: 1px solid #5c5449;
+  border-radius: 7px;
+  color: #ddd3c5;
+  background: #302c27;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dungeon-utility-button--portal { border-color: #71613f; color: #e3c98d; }
+.dungeon-utility-button__symbol { font: 700 1rem Georgia, serif; }
+
+.dungeon-effect-icon:focus-visible,
+.dungeon-utility-button:focus-visible,
+.dungeon-effect-popover__panel > button:focus-visible {
+  outline: 3px solid #d8c398;
+  outline-offset: 2px;
+}
+
+.dungeon-effect-icon:active,
+.dungeon-utility-button:active:not(:disabled) { transform: translateY(1px); }
+
+.dungeon-utility-button:disabled {
+  border-style: dashed;
+  color: #817b72;
+  background: #292723;
+  cursor: not-allowed;
+}
+
+.dungeon-effect-popover {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(8, 7, 6, 0.72);
+}
+
+.dungeon-effect-popover__panel {
+  width: min(360px, 100%);
+  padding: 16px;
+  border: 1px solid #6b5d49;
+  border-radius: 9px;
+  color: #eee5d8;
+  background: #28231e;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+
+.dungeon-effect-popover h3 { margin: 0 0 8px; font-family: Georgia, serif; }
+.dungeon-effect-popover p { margin: 0 0 14px; color: #cec4b5; line-height: 1.4; }
+.dungeon-effect-popover__panel > button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #786b58;
+  border-radius: 6px;
+  color: #eee5d8;
+  background: #3a332b;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dungeon-effect-icon:hover,
+  .dungeon-utility-button:hover:not(:disabled) { border-color: #b19a73; }
+}
+.camp-alert-scale { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin:12px 0; }
+.camp-alert-scale span { height:8px; border-radius:3px; background:#302d2c; }
+.camp-alert-scale--0 span.is-active { background:#756f69; }
+.camp-alert-scale--1 span.is-active { background:#8a6737; }
+.camp-alert-scale--2 span.is-active { background:#713331; }
+.camp-alert-scale--3 span.is-active { background:#963a38; }

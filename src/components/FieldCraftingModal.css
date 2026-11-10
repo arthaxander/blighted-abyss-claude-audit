@@ -1,0 +1,105 @@
+/* Field crafting intentionally uses the same .guild-recipe-row component and
+   .guild-recipe-* styling as the Guild. Only the modal shell differs. */
+.field-crafting-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  overflow: hidden;
+  padding: max(8px, var(--app-foreground-safe-top, 0px))
+    max(8px, var(--app-content-safe-right, 0px))
+    max(20px, var(--app-content-safe-bottom, 0px))
+    max(8px, var(--app-content-safe-left, 0px));
+  background: #030906de;
+}
+.field-crafting-overlay,
+.field-crafting-overlay * { box-sizing: border-box; }
+.field-crafting-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(700px, 100%);
+  /* 100% is the padded overlay's content box, not the full viewport. */
+  max-height: min(800px, 100%);
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #79643e;
+  border-radius: 10px;
+  background: #101713;
+  box-shadow: 0 20px 60px #000b;
+  color: #e5e8df;
+  text-align: left;
+}
+.field-crafting-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #687154;
+  background: #1a2a20;
+}
+.field-crafting-header h3 {
+  margin: 0;
+  color: #d7c79c;
+  font: 700 1.09rem Georgia, serif;
+}
+.field-crafting-header button,
+.field-crafting-prepared button {
+  min-height: 35px;
+  padding: 5px 10px;
+  border: 1px solid #75613d;
+  border-radius: 6px;
+  background: #342f21;
+  color: #eee5ce;
+  font-size: 12px;
+}
+.field-crafting-content { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 8px 10px 12px; scrollbar-width: thin; }
+.field-crafting-panel .guild-category-tabs { margin: 2px 0 7px; }
+.field-crafting-panel .guild-category-tabs button {
+  min-width: 0;
+  min-height: 35px;
+  padding: 5px 3px;
+  border: 1px solid #75613d;
+  border-radius: 5px;
+  background: #17231c;
+  color: #eee5ce;
+  font-size: 12px;
+}
+.field-crafting-panel .guild-category-tabs button[aria-selected="true"] { border-color: #ae9561; background: #28513c; color: #fff4d6; }
+.field-crafting-available {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 0 0 8px;
+  color: #b7c7b6;
+  font-size: 11px;
+}
+.field-crafting-available input { width: 16px; height: 16px; accent-color: #6fa27b; }
+.field-crafting-panel .guild-recipe-list { gap: 7px; }
+.field-crafting-panel .guild-recipe-row { text-align: left; }
+.field-crafting-panel .guild-recipe-craft,
+.field-crafting-panel .guild-recipe-result,
+.field-crafting-panel .guild-recipe-ingredients button { cursor: pointer; }
+.field-crafting-panel .guild-recipe-craft:disabled { cursor: not-allowed; }
+.field-crafting-result { flex: 0 0 auto; padding: 8px 12px; background: #22452d; color: #d5edce; font-size: 12px; }
+.field-crafting-prepared { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 12px; background: #302b1d; color: #e2d5b2; font-size: 12px; }
+.field-crafting-empty { margin: 12px; color: #a8b3a7; font-size: 12px; text-align: center; }
+/* Item card is a child of this overlay, so it sits above the recipe list. */
+.field-crafting-overlay > .item-details-overlay { z-index: 3700; }
+.craft-recipe-art-placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: #b9a875; font: 700 30px Georgia, serif; }
+@media (max-width: 680px) {
+  /* Fit inside the safe-area paddings, leaving the bottom border visible. */
+  .field-crafting-panel { height: min(820px, 100%); max-height: 100%; }
+  .field-crafting-header { padding: 8px 10px; }
+  .field-crafting-content { padding: 6px 7px 10px; }
+  .field-crafting-panel .guild-category-tabs { gap: 3px; }
+  .field-crafting-panel .guild-category-tabs button { min-height: 35px; font-size: 11px; }
+  .field-crafting-panel .guild-recipe-row { padding: 7px; }
+  .field-crafting-prepared { flex-wrap: wrap; }
+}

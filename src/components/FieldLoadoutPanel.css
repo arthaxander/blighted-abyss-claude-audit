@@ -1,0 +1,193 @@
+.field-loadout,
+.field-loadout * { box-sizing: border-box; }
+.field-loadout {
+  margin: 5px 0 13px;
+  overflow: hidden;
+  border: 1px solid #60715a;
+  border-radius: 10px;
+  background: #121d16;
+  color: #e6e9e0;
+  text-align: left;
+}
+.field-loadout-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 55px;
+  gap: 8px;
+  padding: 11px 13px;
+  cursor: pointer;
+  list-style: none;
+  background: linear-gradient(115deg, #1c3023, #142118);
+}
+.field-loadout-summary::-webkit-details-marker { display: none; }
+.field-loadout-summary-title {
+  color: #e6d5aa;
+  font-size: 15px;
+  font-weight: 700;
+}
+.field-loadout-summary-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #bad0b8;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.field-loadout-summary-meta > span { font-size: 22px; line-height: 1; transition: transform .15s; }
+.field-loadout[open] .field-loadout-summary-meta > span { transform: rotate(180deg); }
+.field-loadout-body { padding: 12px; border-top: 1px solid #475b49; }
+.field-loadout-hint {
+  margin: 0 0 10px;
+  color: #aebfae;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.field-loadout-status { margin: 0 0 9px; color: #dec8a2; font-size: 12px; }
+.field-loadout-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.guild-shell .field-loadout-slot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 64px;
+  padding: 6px !important;
+  border: 1px solid #4c634f;
+  border-radius: 7px;
+  background: #19251c;
+  color: #ece8d8;
+  text-align: left;
+}
+.guild-shell .field-loadout-slot:hover:not(:disabled) { background: #253a2a; border-color: #9c8559; }
+.field-loadout-slot-copy { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; gap: 3px; }
+.field-loadout-slot-copy small { color: #9fae9f; font-size: 10px; line-height: 1.15; }
+.field-loadout-slot-copy strong { overflow: hidden; color: #ebdfb9; font-size: 12px; line-height: 1.2; overflow-wrap: anywhere; }
+.field-loadout-slot-chevron { flex: 0 0 auto; color: #baa77e; font-size: 22px; }
+.field-loadout-art {
+  display: grid;
+  flex: 0 0 44px;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border: 1px solid #647861;
+  border-radius: 7px;
+  background: #111812;
+}
+.field-loadout-art > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.field-loadout-art > span { font: 700 26px Georgia, serif; color: #a88f62; }
+.field-loadout-presets { margin-top: 13px; border-top: 1px solid #415142; padding-top: 12px; }
+.field-loadout-presets-title { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; margin-bottom: 8px; }
+.field-loadout-presets-title strong { font-size: 13px; color: #e2d2a7; }
+.field-loadout-presets-title small { font-size: 10px; color: #98aa98; }
+.field-loadout-preset {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 5px;
+  border: 1px solid #455846;
+  border-radius: 7px;
+  background: #19241c;
+}
+.field-loadout-preset-index { display: grid; flex: 0 0 22px; place-items: center; color: #bba879; font-size: 13px; font-weight: 700; }
+.field-loadout-preset-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: #e6e5d8;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.field-loadout-preset-input {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+  min-height: 34px;
+  padding: 4px 6px;
+  border: 1px solid #988257;
+  border-radius: 5px;
+  background: #152219;
+  color: #e6e5d8;
+  font-size: 12px;
+  font-family: inherit;
+}
+.guild-shell .field-loadout-preset button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  min-width: 0;
+  padding: 5px 8px;
+  font-size: 11px;
+  line-height: 1.15;
+}
+.guild-shell .field-loadout-preset-rename { padding: 5px 7px; color: #b8bdad; }
+.guild-shell .field-loadout-preset-save { border-color: #617b62; background: #244332; color: #d6e8d7; }
+.guild-shell .field-loadout-preset-apply { border-color: #867149; background: #352e20; color: #ebdaaf; }
+.field-loadout-feedback { margin: 7px 0 0; color: #abd7af; font-size: 12px; }
+.field-loadout-picker-overlay {
+  position: fixed;
+  z-index: 5000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(14px, var(--app-foreground-safe-top, 0px)) max(10px, var(--app-content-safe-right, 10px)) max(14px, var(--app-content-safe-bottom, 0px)) max(10px, var(--app-content-safe-left, 10px));
+  background: #050907df;
+}
+.field-loadout-picker {
+  display: flex;
+  flex-direction: column;
+  width: min(540px, 100%);
+  max-height: min(740px, 90dvh);
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #958254;
+  border-radius: 11px;
+  background: #121d16;
+  box-shadow: 0 20px 60px #000a;
+}
+.field-loadout-picker-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: 0 0 auto; padding: 13px; border-bottom: 1px solid #4c644e; }
+.field-loadout-picker-header small { color: #9db29b; font-size: 11px; }
+.field-loadout-picker-header h3 { margin: 2px 0 0; color: #e6d5aa; font: 700 19px Georgia, serif; }
+.guild-shell .field-loadout-picker-header button { width: 40px; min-height: 40px; padding: 0; font-size: 25px; }
+.field-loadout-picker-options { display: grid; gap: 6px; flex: 1 1 auto; min-height: 0; padding: 10px; overflow-y: auto; overscroll-behavior: contain; }
+.guild-shell .field-loadout-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 66px;
+  min-width: 0;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid #435944;
+  border-radius: 7px;
+  background: #19261d;
+  text-align: left;
+}
+.guild-shell .field-loadout-option.is-active { border-color: #aa986b; background: #29432f; }
+.guild-shell .field-loadout-option:disabled { opacity: .45; }
+.field-loadout-option-text,
+.field-loadout-option > span:not(.field-loadout-art) { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; gap: 3px; }
+.field-loadout-option-text strong, .field-loadout-option > span strong { color: #ebdfbc; font-size: 13px; line-height: 1.2; }
+.field-loadout-option-text small, .field-loadout-option > span small { color: #abbcaf; font-size: 11px; line-height: 1.25; }
+.field-loadout-option-effect { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.field-loadout-option-check { flex: 0 0 auto !important; color: #bce2b6; font-weight: 700; }
+.field-loadout-picker-footer { flex: 0 0 auto; padding: 10px 13px; border-top: 1px solid #435944; color: #a2b3a4; font-size: 11px; line-height: 1.35; }
+@media (max-width: 510px) {
+  .field-loadout-grid { grid-template-columns: 1fr; }
+  .field-loadout-body { padding: 9px; }
+  .guild-shell .field-loadout-slot { min-height: 57px; }
+  .field-loadout-slot-copy strong { font-size: 12px; }
+  .field-loadout-preset { flex-wrap: wrap; }
+  .field-loadout-preset-name,.field-loadout-preset-input { flex: 1 1 calc(100% - 67px); }
+  .field-loadout-preset-rename { margin-left: auto; }
+  .guild-shell .field-loadout-preset-save,
+  .guild-shell .field-loadout-preset-apply { flex: 1 1 0; }
+  .field-loadout-picker { max-height: calc(100dvh - 22px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-loadout-summary-meta > span { transition: none; }
+}

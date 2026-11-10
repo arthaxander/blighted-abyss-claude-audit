@@ -1,0 +1,224 @@
+.room-choice-list {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.room-choice-card {
+  --room-accent: #8b8171;
+  --room-border: #554d42;
+  position: relative;
+  width: 100%;
+  min-height: 96px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--room-border);
+  border-radius: 8px;
+  color: #e9e2d5;
+  background: linear-gradient(105deg, rgba(57, 51, 43, 0.96), rgba(31, 29, 26, 0.98));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035), 0 3px 9px rgba(0, 0, 0, 0.22);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.room-choice-card__select {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 4px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 96px;
+  padding: 12px 14px 12px 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.room-choice-card--with-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(90deg, rgba(20, 19, 18, 0.96) 0%, rgba(20, 19, 18, 0.88) 18%, rgba(20, 19, 18, 0.68) 38%, rgba(20, 19, 18, 0.42) 58%, rgba(20, 19, 18, 0.14) 80%, rgba(20, 19, 18, 0.04) 100%), var(--room-artwork) 70% 50% / cover;
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.room-choice-card__accent {
+  align-self: stretch;
+  background: var(--room-accent);
+}
+
+.room-choice-card__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+}
+
+.room-choice-card--has-enemies .room-choice-card__content {
+  align-self: start;
+}
+.room-choice-card--has-enemies,
+.room-choice-card--has-enemies .room-choice-card__select { min-height: 128px; }
+
+.room-choice-card--has-enemies .room-choice-card__description {
+  margin-top: 3px;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+.room-choice-card__enemies {
+  position: absolute;
+  bottom: 9px;
+  left: 16px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 46px);
+  max-width: 154px;
+  gap: 6px;
+}
+
+.room-choice-card__enemy {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.room-choice-card__enemy-button {
+  display: block;
+  width: 46px;
+  height: 46px;
+  padding: 2px;
+  overflow: hidden;
+  border: 1px solid #655b4e;
+  border-radius: 6px;
+  background: #171513;
+  cursor: pointer;
+}
+
+.room-choice-card__enemy-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.room-choice-card__enemy-button:focus-visible {
+  outline: 2px solid #d8c398;
+  outline-offset: 1px;
+}
+
+.room-choice-card__enemy-count {
+  position: absolute;
+  right: -5px;
+  bottom: -3px;
+  padding: 1px 4px;
+  border-radius: 7px;
+  background: #171513;
+  color: #eee3d1;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.room-choice-card__modifier{position:absolute;z-index:3;right:42px;top:12px;min-height:34px;padding:5px 9px;border:1px solid #9a7a43;border-radius:999px;background:#292116;color:#e1c382;font:700 12px/1 sans-serif;cursor:pointer}.room-choice-card__modifier-popover{position:absolute;z-index:5;top:50px;right:10px;width:min(260px,calc(100% - 20px));box-sizing:border-box;padding:10px;border:1px solid #806b49;border-radius:8px;background:#171513;color:#e7dfd2;font-size:13px;line-height:1.35;box-shadow:0 7px 20px #000a}.room-choice-card__modifier:focus-visible{outline:2px solid #e1c382;outline-offset:2px}
+
+.room-choice-card__title {
+  color: #f3eadc;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.room-choice-card__description {
+  margin-top: 7px;
+  color: #cec5b8;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.room-choice-card__arrow {
+  position: relative;
+  z-index: 1;
+  color: var(--room-accent);
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.room-choice-card--combat { --room-accent: #9a8d7a; --room-border: #5c5347; }
+.room-choice-card--resource { --room-accent: #71866f; --room-border: #4b5b49; }
+.room-choice-card--fishing { --room-accent: #66828a; --room-border: #465b61; }
+.room-choice-card--treasure { --room-accent: #b29558; --room-border: #71613f; }
+.room-choice-card--secret { --room-accent: #80738f; --room-border: #5b5066; }
+.room-choice-card--altar { --room-accent: #8e5964; --room-border: #633f48; }
+.room-choice-card--cursed { --room-accent: #a04d4d; --room-border: #743c3c; }
+.room-choice-card--boss {
+  --room-accent: #b85b45;
+  --room-border: #8b493a;
+  border-width: 2px;
+  background: linear-gradient(105deg, rgba(70, 39, 34, 0.98), rgba(32, 25, 24, 0.98));
+  box-shadow: inset 0 0 0 1px rgba(190, 116, 83, 0.12), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.room-choice-card__select:focus-visible {
+  outline: 3px solid #d8c398;
+  outline-offset: 2px;
+}
+
+.room-choice-card:has(.room-choice-card__select:active:not(:disabled)) {
+  transform: translateY(1px);
+  border-color: var(--room-accent);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
+}
+
+.room-choice-card.is-disabled {
+  border-style: dashed;
+  color: #a69f95;
+  background: #292723;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  cursor: not-allowed;
+}
+
+.room-choice-card.is-disabled .room-choice-card__accent {
+  background: #68625a;
+}
+
+.room-choice-card.is-disabled .room-choice-card__title,
+.room-choice-card.is-disabled .room-choice-card__description,
+.room-choice-card.is-disabled .room-choice-card__arrow {
+  color: #928c83;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .room-choice-card:not(.is-disabled):has(.room-choice-card__select:hover) {
+    border-color: var(--room-accent);
+    background-color: #39342d;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.055), 0 5px 13px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (max-width: 360px) {
+  .room-choice-card { min-height: 88px; }
+
+  .room-choice-card__select {
+    gap: 10px;
+    min-height: 88px;
+    padding-right: 11px;
+  }
+
+  .room-choice-card__enemies { left: 14px; }
+  .room-choice-card__enemies { grid-template-columns: repeat(3, 42px); max-width: 138px; }
+  .room-choice-card__enemy-button { width: 42px; height: 42px; }
+
+  .room-choice-card__description { font-size: 0.84rem; }
+}

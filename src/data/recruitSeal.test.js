@@ -1,0 +1,34 @@
+import { DEFAULT_RELIC_ID, RELIC_DEFINITIONS, ensureRelicState, getRelicBonuses, grantRelicExperience, resolveRelicProgress } from './relics';
+import { applyItemInCombat, initCombatSession } from '../utils/combatUtils';
+import { createAbilityByName } from './abilityPresets';
+import { createProductionFreshCharacter } from '../utils/characterFactory';
+const player = level => ({ name:'Герой', hp:50,maxHp:100,attack:10,speed:100,abilities:[createAbilityByName('Атака')],items:[{name:'Малое зелье здоровья'}],relics:{activeRelicId:DEFAULT_RELIC_ID,progress:{[DEFAULT_RELIC_ID]:{level,xp:0}}} });
+const enemy={name:'Манекен',hp:100,maxHp:100,attack:0,speed:1,abilities:[createAbilityByName('Атака')]};
+test('Recruit Seal has fifteen replacement-based levels without legacy crit bonuses',()=>{expect(RELIC_DEFINITIONS[0].levels).toHaveLength(15);expect(getRelicBonuses(DEFAULT_RELIC_ID,15)).toEqual({startTurnMeter:.4,consumableTurnMeter:.2,firstConsumableTurnMeter:.3,preserveConsumableChance:.35,insuranceChance:1,extraLootChance:.25});expect(getRelicBonuses(DEFAULT_RELIC_ID,1)).toMatchObject({startTurnMeter:.1,consumableTurnMeter:0});});
+test('progress reaches Recruit Seal level 15 while preserving existing level and xp',()=>{expect(resolveRelicProgress({level:14,xp:90},10)).toMatchObject({level:15,xp:0});const state=ensureRelicState({activeRelicId:DEFAULT_RELIC_ID,progress:{[DEFAULT_RELIC_ID]:{level:11,xp:42}}});expect(grantRelicExperience(state,DEFAULT_RELIC_ID,0).relicState.progress[DEFAULT_RELIC_ID]).toEqual({level:11,xp:42});});
+test('Recruit Seal starts active at level one and XP boundaries retain the canonical cap',()=>{
+  expect(ensureRelicState().progress[DEFAULT_RELIC_ID]).toEqual({level:1,xp:0});
+  expect(ensureRelicState({progress:{[DEFAULT_RELIC_ID]:{level:0,xp:37}}}).progress[DEFAULT_RELIC_ID]).toEqual({level:1,xp:37});
+  expect(resolveRelicProgress({level:1,xp:99},1)).toMatchObject({level:2,xp:0});
+  expect(resolveRelicProgress({level:9,xp:99},1)).toMatchObject({level:10,xp:0});
+  expect(resolveRelicProgress({level:10,xp:99},1)).toMatchObject({level:11,xp:0});
+  expect(resolveRelicProgress({level:14,xp:99},1)).toMatchObject({level:15,xp:0});
+  expect(resolveRelicProgress({level:14,xp:0},10000)).toMatchObject({level:15,xp:0});
+  expect(ensureRelicState({recruitSeal:{level:10,xp:73}}).progress[DEFAULT_RELIC_ID]).toEqual({level:10,xp:73});
+  expect(ensureRelicState({progress:{[DEFAULT_RELIC_ID]:{level:99,xp:12}}}).progress[DEFAULT_RELIC_ID]).toEqual({level:15,xp:0});
+  expect(resolveRelicProgress({level:1,xp:0},1400)).toMatchObject({level:15,xp:0});
+  expect(RELIC_DEFINITIONS.filter(relic=>relic.id!==DEFAULT_RELIC_ID).every(relic=>relic.levels.length===10)).toBe(true);
+});
+test('battle start and first successful consumable use apply capped cumulative turn meter once',()=>{const session=initCombatSession(player(15),[enemy],{rng:()=>.99});expect(session.state.players[0].turnMeter).toBe(400);session.state.initiative.playerReady=true;const result=applyItemInCombat(session,'Малое зелье здоровья',{rng:()=>.99});expect(result.itemUsed).toBe(true);expect(session.state.players[0].turnMeter).toBe(900);expect(session.state.players[0]._recruitSealMetrics).toMatchObject({startTriggers:1,consumableTriggers:1,firstConsumableTriggers:1,preservedConsumables:0});});
+test('a production fresh character receives exactly one level-one combat-start bonus',()=>{
+  const fresh=createProductionFreshCharacter({classId:'Archer'});
+  expect(fresh.relics.progress[DEFAULT_RELIC_ID]).toEqual({level:1,xp:0});
+  const session=initCombatSession(fresh,[enemy],{rng:()=>.99});
+  expect(session.state.players[0].turnMeter).toBe(100);
+  expect(session.state.players[0]._recruitSealMetrics).toMatchObject({startTriggers:1});
+});
+test('preserved consumable still applies its effect and successful-use bonuses',()=>{const session=initCombatSession(player(15),[enemy],{rng:()=>0});session.state.initiative.playerReady=true;const result=applyItemInCombat(session,'Малое зелье здоровья',{rng:()=>0});expect(result.itemUsed).toBe(true);expect(session.state.players[0].hp).toBe(85);expect(session.state.players[0].items).toHaveLength(1);expect(session.state.players[0]._recruitSealMetrics.preservedConsumables).toBe(1);});
+import { createExpeditionDeathResult, normalizeInventorySlots } from '../utils/expeditionInventory';
+import { rollRecruitSealExtraLoot } from '../utils/recruitSealRewards';
+test('level 15 insurance preserves one eligible non-safe stack without duplicating safe stacks',()=>{const p=player(15);p.runInventory=normalizeInventorySlots([{itemId:'Простая ткань',quantity:2},null,{itemId:'Кровяной мох',quantity:3}],10);const result=createExpeditionDeathResult(p,{rng:()=>0});expect(result.insurance).toMatchObject({successful:true,additionalToSafeSlots:true,insuredStack:{itemId:'Кровяной мох',quantity:3}});expect(result.preservedStacks).toEqual([{itemId:'Простая ткань',quantity:2},{itemId:'Кровяной мох',quantity:3}]);});
+test('extra loot is one deterministic eligible location item and excluded sources never recurse',()=>{const p=player(15);const one=rollRecruitSealExtraLoot({player:p,location:'Грибные Пещеры',rng:()=>0});expect(one.triggered).toBe(true);expect(one.item.quantity).toBe(1);expect(rollRecruitSealExtraLoot({player:p,location:'Грибные Пещеры',source:'insurance',rng:()=>0}).triggered).toBe(false);});
